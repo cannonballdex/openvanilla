@@ -1350,8 +1350,8 @@ bool MQ2CharacterType::GetMember(MQVarPtr VarPtr, const char* Member, char* Inde
 		return true;
 
 	case CharacterMembers::PlatinumShared:
-		Dest.DWord = pLocalPC->BankSharedPlat;
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetSharedBankPlatinum();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Cash:
@@ -1360,71 +1360,68 @@ bool MQ2CharacterType::GetMember(MQVarPtr VarPtr, const char* Member, char* Inde
 		return true;
 
 	case CharacterMembers::Platinum:
-		Dest.DWord = pLocalPC->GetPlatinum();
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetPlatinum();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorPlatinum:
-		Dest.DWord = pProfile->CursorPlat;
-		Dest.Type = pIntType;
+		Dest.Int64 = pProfile->GetCursorPlatinum();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Gold:
-		Dest.DWord = pLocalPC->GetGold();
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetGold();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorGold:
-		Dest.DWord = pProfile->CursorGold;
-		Dest.Type = pIntType;
+		Dest.Int64 = pProfile->GetCursorGold();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Silver:
-		Dest.DWord = pLocalPC->GetSilver();
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetSilver();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorSilver:
-		Dest.DWord = pProfile->CursorSilver;
-		Dest.Type = pIntType;
+		Dest.Int64 = pProfile->GetCursorSilver();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Copper:
-		Dest.DWord = pLocalPC->GetCopper();
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetCopper();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorCopper:
-		Dest.DWord = pProfile->CursorCopper;
-		Dest.Type = pIntType;
+		Dest.Int64 = pProfile->GetCursorCopper();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CashBank:
-		Dest.Int64 = static_cast<uint64_t>(pLocalPC->BankPlat) * 1000
-			+ static_cast<uint64_t>(pLocalPC->BankGold) * 100
-			+ static_cast<uint64_t>(pLocalPC->BankSilver) * 10
-			+ pLocalPC->BankCopper;
+		Dest.Int64 = pLocalPC->GetBankTotalCash();
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::PlatinumBank:
-		Dest.DWord = pLocalPC->BankPlat;
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetBankPlatinum();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::GoldBank:
-		Dest.DWord = pLocalPC->BankGold;
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetBankGold();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::SilverBank:
-		Dest.DWord = pLocalPC->BankSilver;
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetBankSilver();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CopperBank:
-		Dest.DWord = pLocalPC->BankCopper;
-		Dest.Type = pIntType;
+		Dest.Int64 = pLocalPC->GetBankCopper();
+		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::AAExp:
