@@ -1,0 +1,27 @@
+﻿# Last updated 2026-09-20 13:40; built for client 'Sep 17 2026 15:46:17'
+# repo folder | commit | remote
+MQ2AASpend | 8c44b236cd0a15dea4b21ff1776e4ffccf287633 | https://github.com/RedGuides/MQ2AASpend.git
+MQ2AdvPath | 0bad13f074ec26c9d8aa6d9bd0885f451afacc5c | https://github.com/RedGuides/MQ2AdvPath.git
+MQ2AutoAccept | 0b2f1a10cd213311c3cf88692c5f136ae60860ed | https://github.com/RedGuides/MQ2AutoAccept.git
+MQ2AutoClaim | 348ba344a946f33239e114ffb65165d6628d8d03 | https://github.com/RedGuides/MQ2AutoClaim.git
+MQ2AutoForage | 21ef57fac09a8d19216f182cfe652510e32114a2 | https://github.com/RedGuides/MQ2AutoForage.git
+MQ2AutoSize | 626824c360342827c1f6cc2713d526de17949913 | https://github.com/RedGuides/MQ2AutoSize.git
+MQ2Cast | b0a9acb6897561b2351b28217422dc1030a8b615 | https://github.com/RedGuides/MQ2Cast.git
+MQ2Dan | e8fb9382b8a7147e644be285adfde1215ab958f4 | https://github.com/dannuic/MQ2Dan.git
+MQ2EasyFind | c3c9b9545dfce64f60835398abe38e14e79c15f4 | https://github.com/brainiac/MQ2EasyFind.git
+MQ2Exchange | 2f43ef644f5b958e5756d8c7086e68f69d80e966 | https://github.com/RedGuides/MQ2Exchange.git
+MQ2GroupInfo | de628d3837911d465c3cdca617e103034aba1d81 | https://github.com/RedGuides/MQ2GroupInfo.git
+MQ2KissTemplate | a42c4a2d68f52274738fc88964de9bc1cc94ce4f | https://github.com/RedGuides/MQ2KissTemplate.git
+MQ2LinkDB | 864f5d597237ab27ef6b17879750e7093d2d8a09 | https://github.com/RedGuides/MQ2LinkDB.git
+MQ2Melee | 07b8fc940449cad86a74b7e4220ee79eb428a882 | https://github.com/RedGuides/MQ2Melee.git
+MQ2MoveUtils | 8b9b8574f749aaee1ead4148c1eb3b190a9c7d8f | https://github.com/RedGuides/MQ2MoveUtils.git
+MQ2Nav | 8513d189f96d1b8ada9435456be34f0ec855f22b | https://github.com/brainiac/MQ2Nav.git
+MQ2PortalSetter | 957d936eb50d3cb9554d61747a9f6638280084de | https://github.com/RedGuides/MQ2PortalSetter.git
+MQ2Relocate | 8388d96d368068e38e3ac951c4185beb85bfd25e | https://github.com/RedGuides/MQ2Relocate.git
+MQ2Rez | 7f19722679cb97a7083c99558b5d960fd9a461e6 | https://github.com/RedGuides/MQ2Rez.git
+MQ2Say | a6d4e30e602175f53d49a6424cdad92047c38aff | https://github.com/RedGuides/MQ2Say.git
+MQ2SpawnMaster | acc01cbac1bca5b6547d6f4bfbac6a9ae8e4b31f | https://github.com/RedGuides/MQ2SpawnMaster.git
+MQ2SQLite | 19816defec22cd938f5c84520c305ff1089e66c8 | https://gitlab.com/Knightly1/MQ2SQLite.git
+MQ2Status | 5bc5b593c6e6129227d0e91442ee2357fffc4be7 | https://github.com/RedGuides/MQ2Status.git
+MQ2Twist | e757c89192a7faae6d222b0f613fbb6b6f0e5806 | https://github.com/RedGuides/MQ2Twist.git
+MQ2XAssist | 927ae721de1036f968f465a1f379239807872602 | https://github.com/RedGuides/MQ2XAssist.git
