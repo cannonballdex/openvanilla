@@ -101,18 +101,7 @@ public:
 	void ReloadUI_Detour(bool UseINI, bool bUnknown)
 	{
 		ReloadUI_Trampoline(UseINI, bUnknown);
-
-		// WORKAROUND (Sep 17 2026 client): calling InitializeInGameUI() here makes EverQuest exit
-		// silently shortly after every zone change (no crash dump). Bisected with a trace build:
-		// the call itself returns, the client dies afterwards. Suspect stale window struct layouts
-		// in eqlib UI.h (stamped 2026-09-11). Plugins are still notified of the reload.
-		// Restore InitializeUI() once eqlib's window layouts are verified against this client.
-		s_uiInitialized = true;
-
-		{
-			MQScopedBenchmark bm(bmPluginsReloadUI);
-			PluginsReloadUI();
-		}
+		InitializeUI();
 	}
 #endif
 
