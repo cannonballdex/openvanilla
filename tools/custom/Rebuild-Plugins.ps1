@@ -370,7 +370,8 @@ foreach ($i in $toInstall) {
 }
 
 # Record exactly which source each installed plugin was built from (for reproducible rebuilds).
-try {
+# Only when plugins were actually built: a -CoreOnly run must not touch this tracked file.
+if ($plugProjects.Count -gt 0) { try {
     # Merge into the existing record: a partial run (-Only / -SkipCore) must only refresh the plugins it built.
     $commitFile = Join-Path $PSScriptRoot 'plugin-commits.txt'   # next to this script, so it is tracked and backed up
     $record = @{}
@@ -393,7 +394,7 @@ try {
     $lines += ($record.Keys | Sort-Object | ForEach-Object { $record[$_] })
     Set-Content -Path $commitFile -Value $lines -Encoding UTF8
     Say "Recorded plugin source commits in $commitFile" 'DarkGray'
-} catch { Say "  (could not write plugin-commits.txt: $($_.Exception.Message))" 'DarkYellow' }
+} catch { Say "  (could not write plugin-commits.txt: $($_.Exception.Message))" 'DarkYellow' } }
 
 Say ''
 if ($buildFailed.Count) {
