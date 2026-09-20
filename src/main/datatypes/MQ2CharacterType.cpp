@@ -1350,7 +1350,7 @@ bool MQ2CharacterType::GetMember(MQVarPtr VarPtr, const char* Member, char* Inde
 		return true;
 
 	case CharacterMembers::PlatinumShared:
-		Dest.Int64 = pLocalPC->GetSharedBankPlatinum();
+		Dest.Set(pLocalPC->BankSharedPlat);
 		Dest.Type = pInt64Type;
 		return true;
 
@@ -1360,67 +1360,70 @@ bool MQ2CharacterType::GetMember(MQVarPtr VarPtr, const char* Member, char* Inde
 		return true;
 
 	case CharacterMembers::Platinum:
-		Dest.Int64 = pLocalPC->GetPlatinum();
+		Dest.Set(pLocalPC->GetPlatinum());
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorPlatinum:
-		Dest.Int64 = pProfile->GetCursorPlatinum();
+		Dest.Set(pProfile->CursorPlat);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Gold:
-		Dest.Int64 = pLocalPC->GetGold();
+		Dest.Set(pLocalPC->GetGold());
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorGold:
-		Dest.Int64 = pProfile->GetCursorGold();
+		Dest.Set(pProfile->CursorGold);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Silver:
-		Dest.Int64 = pLocalPC->GetSilver();
+		Dest.Set(pLocalPC->GetSilver());
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorSilver:
-		Dest.Int64 = pProfile->GetCursorSilver();
+		Dest.Set(pProfile->CursorSilver);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::Copper:
-		Dest.Int64 = pLocalPC->GetCopper();
+		Dest.Set(pLocalPC->GetCopper());
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CursorCopper:
-		Dest.Int64 = pProfile->GetCursorCopper();
+		Dest.Set(pProfile->CursorCopper);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CashBank:
-		Dest.Int64 = pLocalPC->GetBankTotalCash();
+		Dest.Int64 = static_cast<uint64_t>(pLocalPC->BankPlat) * 1000
+			+ static_cast<uint64_t>(pLocalPC->BankGold) * 100
+			+ static_cast<uint64_t>(pLocalPC->BankSilver) * 10
+			+ pLocalPC->BankCopper;
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::PlatinumBank:
-		Dest.Int64 = pLocalPC->GetBankPlatinum();
+		Dest.Set(pLocalPC->BankPlat);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::GoldBank:
-		Dest.Int64 = pLocalPC->GetBankGold();
+		Dest.Set(pLocalPC->BankGold);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::SilverBank:
-		Dest.Int64 = pLocalPC->GetBankSilver();
+		Dest.Set(pLocalPC->BankSilver);
 		Dest.Type = pInt64Type;
 		return true;
 
 	case CharacterMembers::CopperBank:
-		Dest.Int64 = pLocalPC->GetBankCopper();
+		Dest.Set(pLocalPC->BankCopper);
 		Dest.Type = pInt64Type;
 		return true;
 
@@ -3050,7 +3053,7 @@ bool MQ2CharacterType::GetMember(MQVarPtr VarPtr, const char* Member, char* Inde
 		// returns combined number of spell and damage "absorbment"
 		// should probably split these into spell vs melee
 	case CharacterMembers::Dar:
-		Dest.DWord = 0;
+		Dest.Int64 = 0;
 		Dest.Type = pInt64Type;
 
 		for (const auto& buff : pProfile->Buffs)
