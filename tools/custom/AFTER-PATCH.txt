@@ -1,0 +1,227 @@
+=====================================================================
+  AFTER AN EVERQUEST PATCH: GET MACROQUEST WORKING AGAIN
+  (your MQ2Next / openvanilla build in C:\MQNext-LiveTest)
+=====================================================================
+Written 2026-09-20. Everything below was tested on the Sep 17 2026
+patch (client build 15:46:17).
+
+WHEN TO USE THIS
+  EverQuest patched and MacroQuest now refuses to start, or starts and
+  then closes silently, crashes at odd moments (zoning, right-clicking
+  an item, loading a plugin), or a feature just does nothing.
+
+---------------------------------------------------------------------
+PART 1: THE SHORT VERSION (3 commands)
+---------------------------------------------------------------------
+Open Windows PowerShell. If you are playing with C:\MQNext-LiveTest,
+close that EverQuest and its MacroQuest launcher first (EverQuest
+running with the RedGuides C:\MQNext install can stay open). Then run
+these one at a time.
+
+  COMMAND 1 - "Can I update yet?" (read-only, changes nothing)
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\G4M3R\Documents\GitHub\openvanilla\tools\custom\Update-AfterPatch.ps1" -DryRun
+
+    * It ends with "Official offsets match your client"  -> go to command 2.
+    * It says RedGuides has NOT published this patch yet -> STOP. Nothing
+      was changed. Run command 1 again in a few hours or tomorrow.
+    * It also lists "RedGuides core fixes missing from your branch".
+      "none" -> nothing to do. If it lists commits, see Part 3
+      ("core fixes missing") before command 2.
+
+  COMMAND 2 - The update (about 10-15 minutes)
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\G4M3R\Documents\GitHub\openvanilla\tools\custom\Update-AfterPatch.ps1" -Launch
+
+    It downloads RedGuides' official offsets, rebuilds core and all 26
+    plugins, checks every file is stamped for the new client, installs
+    into C:\MQNext-LiveTest with a backup, and starts MacroQuest.
+    It ends with SUCCESS, or FINISHED WITH PROBLEMS (see Part 3).
+
+  TEST IN GAME (this is the real test - see Part 2)
+
+  COMMAND 3 - Save it to GitHub (only after the tests pass)
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\G4M3R\Documents\GitHub\openvanilla\tools\custom\Update-AfterPatch.ps1" -Publish
+
+    Pushes your eqlib branch first, then the main repo. Only the eqlib
+    pointer and tools\custom\plugin-commits.txt are added. No settings,
+    logins or character information is ever included.
+
+---------------------------------------------------------------------
+PART 2: WHAT TO TEST IN GAME
+---------------------------------------------------------------------
+A quiet first minute proves nothing: every earlier crash needed a
+specific action. Do all of these:
+
+  [ ] Log in and let it sit two or three minutes.
+  [ ] Zone at least five times, including the guild lobby and hall.
+  [ ] Right-click an item (for example the arrows).
+  [ ] Type /plugin and check your plugins are listed.
+  [ ] Open the chat window.
+  [ ] Try /nav somewhere, and click the map to travel.
+  [ ] Log in with an AutoLogin profile.
+
+If EverQuest closes with no message, note what you were doing and go
+to Part 4.
+
+---------------------------------------------------------------------
+PART 3: WHAT THE MESSAGES MEAN
+---------------------------------------------------------------------
+"RedGuides has NOT published offsets for this patch yet"
+    Their branch is still on the old client. Wait and re-run command 1.
+    Do not build anything yet.
+
+"Close the EverQuest / MacroQuest that is running from C:\MQNext-LiveTest"
+    Files in the LiveTest folder are in use. Close that EverQuest and
+    its launcher (check the tray icon), then re-run. EverQuest running
+    from C:\MQNext does not cause this.
+
+"RedGuides core fixes missing from your branch" lists commits
+    RedGuides fixed something in MacroQuest itself (not the offsets),
+    e.g. the Sep 25 2026 /bzsrch update. These are not applied for you.
+    Ask for help, or take each one with:
+       git -C "C:\Users\G4M3R\Documents\GitHub\openvanilla" cherry-pick -x <hash>
+    then run command 2. If a cherry-pick reports a conflict, run
+       git -C "C:\Users\G4M3R\Documents\GitHub\openvanilla" cherry-pick --abort
+    and ask for help.
+
+"src\eqlib has uncommitted changes"
+    Something is edited in that folder. Commit or stash it first, or the
+    script could lose it.
+
+FINISHED WITH PROBLEMS
+    Some plugins failed to build or copy. The rest DID install. Note the
+    plugin names printed in red and the log path (plugins\rebuild-*.log),
+    and ask for help with those. A failed plugin usually means the MQ
+    API changed and that plugin needs a newer version.
+
+"Incorrect client version" popup when MQ starts
+    The client and the offsets file do not match. Re-run command 1; the
+    official offsets are probably not published yet.
+
+---------------------------------------------------------------------
+PART 4: IF SOMETHING MISBEHAVES (do this BEFORE changing anything)
+---------------------------------------------------------------------
+Newest crash dumps:
+
+    Get-ChildItem "C:\MQNext-LiveTest\Logs\Dumps" -Recurse -Filter *.dmp | Sort-Object LastWriteTime -Descending | Select-Object -First 3 FullName, LastWriteTime
+
+Newest MacroQuest log (last 40 lines):
+
+    Get-ChildItem "C:\MQNext-LiveTest\Logs" -Filter "MacroQuest-2*.log" | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | Get-Content -Tail 40
+
+Note the time of the crash and what you were doing.
+
+What the symptoms usually mean:
+    Silent close, no error, often at one action
+        -> a wrong function address in the offsets file.
+    Dump shows a read/write of address 0 inside eqgame.exe
+        -> same: a call landed in the wrong place.
+    A plugin misbehaves but the client is fine
+        -> that plugin needs rebuilding or a newer version.
+    A script stops working but the client is fine
+        -> the patch renamed a UI window or field; fix that script.
+    Quiet for an hour, then a crash on one action
+        -> still points at offsets. Stability is NOT proof.
+
+To find which plugin: set plugins to =0 in
+C:\MQNext-LiveTest\config\MacroQuest.ini (game closed) and turn them
+back on a few at a time.
+
+---------------------------------------------------------------------
+PART 5: ROLLBACK
+---------------------------------------------------------------------
+Every install makes a backup folder. List the newest:
+
+    Get-ChildItem "C:\MQNext-LiveTest" -Directory -Filter "backup-*" | Sort-Object CreationTime -Descending | Select-Object -First 3 Name, CreationTime
+
+Copy the contents of the newest one back over C:\MQNext-LiveTest (the
+update prints the exact folder name in its last lines).
+
+Put the SOURCE back to the last hand-tagged state:
+
+    git -C "C:\Users\G4M3R\Documents\GitHub\openvanilla" switch live-update-2026-09-16
+    git -C "C:\Users\G4M3R\Documents\GitHub\openvanilla" submodule update
+
+Named restore points on GitHub and your PC (main repo AND eqlib):
+    known-good-2026-09-20   (the state that worked on the Sep 17 patch)
+
+---------------------------------------------------------------------
+PART 6: THE LONG VERSION (same thing by hand, step by step)
+---------------------------------------------------------------------
+Use this if the one-command script ever fails and you want to see each
+step. Set this once per PowerShell window:
+
+    $r = "C:\Users\G4M3R\Documents\GitHub\openvanilla"
+
+  1. Close any EverQuest running from C:\MQNext-LiveTest (EverQuest
+     running from C:\MQNext is fine; the rebuild checks the files).
+
+  2. Confirm both EverQuest folders updated (your profiles use both):
+       Get-Item C:\EverQuest\eqgame.exe, C:\EverQuest2\eqgame.exe | Select-Object FullName, LastWriteTime
+
+  3. Both repos should be clean (no output = good):
+       git -C $r status --short
+       git -C "$r\src\eqlib" status --short
+
+  4. Has RedGuides published this patch? (read-only)
+       powershell -NoProfile -ExecutionPolicy Bypass -File "$r\tools\custom\Rebuild-Plugins.ps1" -DryRun -Sync
+     "official offsets match..." -> continue.  "NOT for your installed
+     client yet" -> stop and wait.
+
+  4b. Any RedGuides core fixes you don't have? (read-only; no output = none)
+       git -C $r fetch --quiet https://github.com/macroquest/macroquest.git +master:refs/remotes/check/macroquest
+       git -C $r log --cherry-pick --right-only --no-merges --oneline HEAD...check/macroquest -- . ':!src/eqlib'
+     Take any listed with: git -C $r cherry-pick -x <hash>
+
+  5. Full rebuild + install (about 10-15 minutes):
+       powershell -NoProfile -ExecutionPolicy Bypass -File "$r\tools\custom\Rebuild-Plugins.ps1" -Sync -ApplyOfficial -Update
+
+  6. Start MacroQuest:
+       Start-Process "C:\MQNext-LiveTest\MacroQuest.exe" -WorkingDirectory "C:\MQNext-LiveTest"
+
+  7. Test in game (Part 2).
+
+  8. Save to GitHub. Push the eqlib branch FIRST, then the main repo
+     (if the order is reversed a fresh clone cannot find the submodule):
+       git -C "$r\src\eqlib" push origin official-live
+       git -C $r add src/eqlib tools/custom/plugin-commits.txt
+       git -C $r commit -m "live: update to official eqlib for the new EQ patch"
+       git -C $r push origin live-update-2026-09-16
+
+  Rebuild only one plugin, or only the core:
+       ... Rebuild-Plugins.ps1 -SkipCore -Only MQ2Nav
+       ... Rebuild-Plugins.ps1 -CoreOnly
+
+  Pull in RedGuides' own openvanilla changes occasionally (can conflict;
+  if it does, ask before resolving):
+       git -C $r fetch upstream
+       git -C $r merge upstream/master
+
+---------------------------------------------------------------------
+PART 7: GOOD TO KNOW
+---------------------------------------------------------------------
+* Where the offsets come from: RedGuides publishes them for every patch
+  in https://github.com/redguides/eqlib (branch "live"). The script
+  fetches that, checks it matches your installed eqgame.exe, and refuses
+  otherwise. Their first commit for a patch is sometimes marked "not
+  complete"; if the game misbehaves right after a patch, re-run the
+  update after their next commit.
+* Every plugin must be rebuilt after a patch: plugins are compiled
+  against EQ's data layouts. The script does all of them.
+* Never mix old and new DLLs in one install.
+* Skipped on purpose: the CWTN class plugins (no public source).
+  No public build for: mq2buffme, mqtexttospeech.
+* Your settings, aliases, key binds, AutoLogin data and overlay layouts
+  live in C:\MQNext-LiveTest\config and are NOT touched by an update.
+* Your plugin sources are in ...\openvanilla\plugins (git-ignored).
+  tools\custom\plugin-commits.txt records where each came from, and
+  tools\custom\Restore-Plugins.ps1 rebuilds that folder on a new PC.
+* Scripts live in ...\openvanilla\tools\custom\ and are on GitHub:
+    Update-AfterPatch.ps1   the one-command routine (this file's Part 1)
+    Rebuild-Plugins.ps1     build + verify + install (used by the above)
+    Restore-Plugins.ps1     re-create plugins\ from plugin-commits.txt
+* Both repos on GitHub: cannonballdex/openvanilla and
+  cannonballdex/eqlib (branch official-live).
+=====================================================================

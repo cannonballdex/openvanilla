@@ -6,6 +6,8 @@ git-ignored); `plugin-commits.txt` records where each came from and which commit
 
 | File | Purpose |
 |---|---|
+| `AFTER-PATCH.txt` | The whole after-an-EQ-patch procedure in plain text (short version, tests, troubleshooting, rollback). |
+| `Update-AfterPatch.ps1` | **The one-command routine.** `-DryRun` checks whether RedGuides has published the patch; default runs the full update; `-Publish` pushes the result to GitHub after you have tested. |
 | `Rebuild-Plugins.ps1` | Builds core + every plugin under `plugins\`, checks each DLL is stamped for the installed client, and installs into a test folder with a backup. |
 | `Restore-Plugins.ps1` | Re-creates `plugins\` from `plugin-commits.txt` (clone each repo and check out the recorded commit). |
 | `plugin-commits.txt` | `folder \| commit \| remote` for each plugin repo. Updated automatically by `Rebuild-Plugins.ps1`. |
