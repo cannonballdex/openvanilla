@@ -5,7 +5,7 @@
 
 .DESCRIPTION
     Steps:
-      1. Refuse to run while eqgame.exe / MacroQuest.exe are running (their DLLs are locked).
+      1. Refuse to run while any DLL/EXE in <InstallDir> is in use (EQ running from another install is fine).
       2. Read the client version that eqlib expects (src\eqlib\include\eqlib\offsets\eqgame.h) and
          check it against the real eqgame.exe. If they differ, eqgame.h is out of date: STOP.
       3. Build src\MacroQuest.sln (core + built-in plugins), unless -SkipCore.
@@ -157,9 +157,19 @@ Say "  repo      : $repo"
 Say "  install   : $InstallDir"
 Say "  eq client : $EQDir"
 
-$running = Get-Process eqgame, MacroQuest -ErrorAction SilentlyContinue
-if ($running -and -not $DryRun) {
-    Fail ("Close these first (their DLLs are locked): " + (($running | ForEach-Object { "$($_.Name) [$($_.Id)]" }) -join ', '))
+# Only the install folder matters: EQ running with MQ from another install (e.g. C:\MQNext) locks nothing here.
+# A file is in use if it can't be opened for exclusive write.
+$locked = @()
+if (Test-Path $InstallDir) {
+    $binFiles = @(Get-ChildItem $InstallDir, (Join-Path $InstallDir 'plugins') -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Extension -in '.dll', '.exe' })
+    foreach ($f in $binFiles) {
+        try { $s = [IO.File]::Open($f.FullName, 'Open', 'ReadWrite', 'None'); $s.Close() }
+        catch { $locked += $f.FullName.Substring($InstallDir.Length).TrimStart('\') }
+    }
+}
+if ($locked -and -not $DryRun) {
+    Fail ("Files in $InstallDir are in use (close the EQ/MacroQuest running from it first): " + (($locked | Select-Object -First 5) -join ', '))
 }
 
 # ---- 0b. optional: check RedGuides' official eqlib for this client ----------

@@ -1,4 +1,4 @@
-﻿# Last updated 2026-09-20 13:40; built for client 'Sep 17 2026 15:46:17'
+﻿# Last updated 2026-10-05 19:30; built for client 'Sep 17 2026 15:46:17'
 # repo folder | commit | remote
 MQ2AASpend | 8c44b236cd0a15dea4b21ff1776e4ffccf287633 | https://github.com/RedGuides/MQ2AASpend.git
 MQ2AdvPath | 0bad13f074ec26c9d8aa6d9bd0885f451afacc5c | https://github.com/RedGuides/MQ2AdvPath.git
@@ -18,6 +18,7 @@ MQ2MoveUtils | 8b9b8574f749aaee1ead4148c1eb3b190a9c7d8f | https://github.com/Red
 MQ2Nav | 8513d189f96d1b8ada9435456be34f0ec855f22b | https://github.com/brainiac/MQ2Nav.git
 MQ2PortalSetter | 957d936eb50d3cb9554d61747a9f6638280084de | https://github.com/RedGuides/MQ2PortalSetter.git
 MQ2Relocate | 8388d96d368068e38e3ac951c4185beb85bfd25e | https://github.com/RedGuides/MQ2Relocate.git
+MQ2Rewards | 34d814dc7e7db3454d72f094b96a5778dc44d936 | https://github.com/RedGuides/MQ2Rewards.git
 MQ2Rez | 7f19722679cb97a7083c99558b5d960fd9a461e6 | https://github.com/RedGuides/MQ2Rez.git
 MQ2Say | a6d4e30e602175f53d49a6424cdad92047c38aff | https://github.com/RedGuides/MQ2Say.git
 MQ2SpawnMaster | acc01cbac1bca5b6547d6f4bfbac6a9ae8e4b31f | https://github.com/RedGuides/MQ2SpawnMaster.git
