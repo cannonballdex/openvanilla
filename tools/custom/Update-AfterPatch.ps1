@@ -12,7 +12,9 @@
          Then lists any MacroQuest core fixes RedGuides has that your branch lacks (read-only).
       4. Runs Rebuild-Plugins.ps1 -Sync -ApplyOfficial -Update (build everything, verify version
          stamps, install with a backup).
-      5. Optionally launches MacroQuest (-Launch) so you can test.
+      5. Copies your settings and scripts from <SettingsFrom> (the RedGuides install) into <InstallDir>
+         with Sync-Settings.ps1, so the build is ready to play if the RedGuides install is broken.
+      6. Optionally launches MacroQuest (-Launch) so you can test.
 
     After you have tested in game, run it again with -Publish to save the result to GitHub
     (eqlib branch first, then the main repo). Nothing personal is added; only the eqlib
@@ -23,6 +25,8 @@
 .PARAMETER DryRun    Do steps 1-3 only (read-only). Builds and changes nothing.
 .PARAMETER InstallDir  Default C:\MQNext-LiveTest
 .PARAMETER EQDirs      EverQuest folders to show build dates for. Default C:\EverQuest, C:\EverQuest2
+.PARAMETER SettingsFrom    Install to copy settings from after the build. Default C:\MQNext
+.PARAMETER NoSettingsSync  Do not copy settings after the build.
 
 .EXAMPLE
     powershell -NoProfile -ExecutionPolicy Bypass -File tools\custom\Update-AfterPatch.ps1
@@ -35,7 +39,9 @@ param(
     [switch]$Publish,
     [switch]$DryRun,
     [string]$InstallDir = 'C:\MQNext-LiveTest',
-    [string[]]$EQDirs   = @('C:\EverQuest', 'C:\EverQuest2')
+    [string[]]$EQDirs   = @('C:\EverQuest', 'C:\EverQuest2'),
+    [string]$SettingsFrom = 'C:\MQNext',
+    [switch]$NoSettingsSync
 )
 
 $ErrorActionPreference = 'Stop'
@@ -165,7 +171,20 @@ if ($rc -eq 1 -or $rc -eq 255) { Stop-Here "The update stopped with an error (se
 $partial = ($rc -ne 0)
 if ($text -notmatch 'files installed, all stamped') { $partial = $true }
 
+$syncNote = $null
+if (-not $NoSettingsSync -and (Test-Path $SettingsFrom)) {
+    Say ''; Say "Copying your settings from $SettingsFrom ..." 'Cyan'
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Sync-Settings.ps1') -MQNext $SettingsFrom -LiveTest $InstallDir 2>&1 | ForEach-Object { Write-Host $_ }
+    $syncNote = switch ($LASTEXITCODE) {
+        0       { $null }
+        2       { "Some settings were changed in both installs and were NOT copied (listed above)." }
+        3       { 'Some settings files could not be copied (listed above).' }
+        default { 'The settings copy failed (see above).' }
+    }
+}
+
 Say ''
+if ($syncNote) { Say $syncNote 'Yellow' }
 if ($partial) {
     Say 'FINISHED WITH PROBLEMS: some plugins failed to build or could not be copied (listed above).' 'Yellow'
     Say 'The rest installed. Test in game; bring me the failing plugin names.' 'Yellow'

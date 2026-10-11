@@ -9,6 +9,7 @@ git-ignored); `plugin-commits.txt` records where each came from and which commit
 | `AFTER-PATCH.txt` | The whole after-an-EQ-patch procedure in plain text (short version, tests, troubleshooting, rollback). |
 | `Update-AfterPatch.ps1` | **The one-command routine.** `-DryRun` checks whether RedGuides has published the patch; default runs the full update; `-Publish` pushes the result to GitHub after you have tested. |
 | `Rebuild-Plugins.ps1` | Builds core + every plugin under `plugins\`, checks each DLL is stamped for the installed client, and installs into a test folder with a backup. |
+| `Sync-Settings.ps1` | Keeps settings and scripts (config, lua, macros, modules, resources) the same in `C:\MQNext` and `C:\MQNext-LiveTest`. Default copies `C:\MQNext` -> LiveTest (runs automatically after `Update-AfterPatch.ps1`); `-Back` copies LiveTest -> `C:\MQNext`. Only files changed on the side you copy from are copied, files changed on both sides are listed, overwritten files are backed up, and `MacroQuest.ini` is merged so each install keeps its own plugin list. `-DryRun` shows what would change. |
 | `Restore-Plugins.ps1` | Re-creates `plugins\` from `plugin-commits.txt` (clone each repo and check out the recorded commit). |
 | `plugin-commits.txt` | `folder \| commit \| remote` for each plugin repo. Updated automatically by `Rebuild-Plugins.ps1`. |
 

@@ -35,7 +35,8 @@ these one at a time.
 
     It downloads RedGuides' official offsets, rebuilds core and all 26
     plugins, checks every file is stamped for the new client, installs
-    into C:\MQNext-LiveTest with a backup, and starts MacroQuest.
+    into C:\MQNext-LiveTest with a backup, copies your settings and
+    scripts over from C:\MQNext (Sync-Settings.ps1), and starts MacroQuest.
     It ends with SUCCESS, or FINISHED WITH PROBLEMS (see Part 3).
 
   TEST IN GAME (this is the real test - see Part 2)
@@ -47,6 +48,20 @@ these one at a time.
     Pushes your eqlib branch first, then the main repo. Only the eqlib
     pointer and tools\custom\plugin-commits.txt are added. No settings,
     logins or character information is ever included.
+
+  GOING BACK TO C:\MQNext (after redfetch has updated it)
+
+    Close EverQuest and MacroQuest from C:\MQNext-LiveTest, then BEFORE
+    starting MacroQuest from C:\MQNext, copy your LiveTest changes back:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\G4M3R\Documents\GitHub\openvanilla\tools\custom\Sync-Settings.ps1" -Back
+
+    Only files you changed in LiveTest are copied; anything redfetch
+    updated in C:\MQNext is left alone. Files changed in BOTH installs
+    are listed and not copied (re-run with -Force to let LiveTest win).
+    Every overwritten file is saved in C:\MQNext\backup-settings-<time>.
+    To copy C:\MQNext -> LiveTest at any other time, run the same
+    command without -Back.
 
 ---------------------------------------------------------------------
 PART 2: WHAT TO TEST IN GAME
