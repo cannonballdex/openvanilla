@@ -215,6 +215,11 @@ if ($Sync) {
     } elseif ($clientOk -and [int]$ahead -gt 0) {
         Say '  To use it: re-run with -Sync -ApplyOfficial' 'Yellow'
     }
+    # the checks below read src\eqlib as it is now; a real update switches it to the official commit first
+    if ($DryRun -and $clientOk -and $head -ne $tip) {
+        Say '  (dry run: src\eqlib is not on the official commit yet, so the local checks are skipped)' 'DarkYellow'
+        Say ''; Say 'Dry run: nothing built, copied or pulled.' 'Green'; exit 0
+    }
 }
 
 # ---- 1. expected client version -------------------------------------------
