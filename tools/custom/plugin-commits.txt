@@ -1,4 +1,4 @@
-﻿# Last updated 2026-10-05 19:30; built for client 'Sep 17 2026 15:46:17'
+﻿# Last updated 2026-10-24 07:26; built for client 'Oct 19 2026 13:46:43'
 # repo folder | commit | remote
 MQ2AASpend | 8c44b236cd0a15dea4b21ff1776e4ffccf287633 | https://github.com/RedGuides/MQ2AASpend.git
 MQ2AdvPath | 0bad13f074ec26c9d8aa6d9bd0885f451afacc5c | https://github.com/RedGuides/MQ2AdvPath.git
@@ -8,7 +8,7 @@ MQ2AutoForage | 21ef57fac09a8d19216f182cfe652510e32114a2 | https://github.com/Re
 MQ2AutoSize | 626824c360342827c1f6cc2713d526de17949913 | https://github.com/RedGuides/MQ2AutoSize.git
 MQ2Cast | b0a9acb6897561b2351b28217422dc1030a8b615 | https://github.com/RedGuides/MQ2Cast.git
 MQ2Dan | e8fb9382b8a7147e644be285adfde1215ab958f4 | https://github.com/dannuic/MQ2Dan.git
-MQ2EasyFind | c3c9b9545dfce64f60835398abe38e14e79c15f4 | https://github.com/brainiac/MQ2EasyFind.git
+MQ2EasyFind | 075519b3ace96de6ac10dca5c16892331968e785 | https://github.com/brainiac/MQ2EasyFind.git
 MQ2Exchange | 2f43ef644f5b958e5756d8c7086e68f69d80e966 | https://github.com/RedGuides/MQ2Exchange.git
 MQ2GroupInfo | de628d3837911d465c3cdca617e103034aba1d81 | https://github.com/RedGuides/MQ2GroupInfo.git
 MQ2KissTemplate | a42c4a2d68f52274738fc88964de9bc1cc94ce4f | https://github.com/RedGuides/MQ2KissTemplate.git
